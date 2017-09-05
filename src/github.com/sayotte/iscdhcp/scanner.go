@@ -17,16 +17,18 @@ func (l *scanner) init() {
 func (l *scanner) step(b byte) (int, error) {
 	for re, spec := range lexMap[l.stateStack[0]] {
 		if re.Match([]byte{b}) {
-			switch spec.newState {
-			case scanSameState:
-				break
-			case scanPopState:
-				l.stateStack = l.stateStack[1:]
-				if len(l.stateStack) == 0 {
-					return codeContinue, contextError("state stack is empty")
+			for _, newState := range spec.newStates {
+				switch newState {
+				case scanSameState:
+					continue
+				case scanPopState:
+					l.stateStack = l.stateStack[1:]
+					if len(l.stateStack) == 0 {
+						return codeContinue, contextError("state stack is empty")
+					}
+				default:
+					l.stateStack = append([]int{newState}, l.stateStack...)
 				}
-			default:
-				l.stateStack = append([]int{spec.newState}, l.stateStack...)
 			}
 			return spec.code, nil
 		}
@@ -36,65 +38,73 @@ func (l *scanner) step(b byte) (int, error) {
 }
 
 type transitionSpec struct {
-	code     int
-	newState int
+	code      int
+	newStates []int
 }
 
 var lexMap = map[int]map[*regexp.Regexp]transitionSpec{
 	scanStateFindAnyBegin: map[*regexp.Regexp]transitionSpec{
 		regexp.MustCompile(`\{`): {
-			code:     codeBlockBegin,
-			newState: scanSameState,
+			code:      codeBlockBegin,
+			newStates: []int{scanSameState},
 		},
 		regexp.MustCompile(`}`): {
-			code:     codeBlockEnd,
-			newState: scanSameState,
+			code:      codeBlockEnd,
+			newStates: []int{scanSameState},
 		},
-		regexp.MustCompile("[0-9a-zA-Z]"): {
-			code:     codeIdentifierBegin,
-			newState: scanStateFindIdentifierEnd,
+		regexp.MustCompile("[0-9a-zA-Z!=~]"): {
+			code:      codeIdentifierBegin,
+			newStates: []int{scanStateFindIdentifierEnd},
 		},
 		regexp.MustCompile(`[\s\n]`): {
-			code:     codeWhitespace,
-			newState: scanSameState,
+			code:      codeWhitespace,
+			newStates: []int{scanSameState},
 		},
 		regexp.MustCompile(`"`): {
-			code:     codeStringBegin,
-			newState: scanStateFindStringEnd,
+			code:      codeStringBegin,
+			newStates: []int{scanStateFindStringEnd},
 		},
 		regexp.MustCompile(`#`): {
-			code:     codeCommentBegin,
-			newState: scanStateFindCommentEnd,
-		},
-		regexp.MustCompile(`=`): {
-			code:     codeAssignment,
-			newState: scanSameState,
+			code:      codeCommentBegin,
+			newStates: []int{scanStateFindCommentEnd},
 		},
 		regexp.MustCompile(`;`): {
-			code:     codeStatementEnd,
-			newState: scanSameState,
+			code:      codeSemicolon,
+			newStates: []int{scanSameState},
 		},
 	},
 	scanStateFindIdentifierEnd: map[*regexp.Regexp]transitionSpec{
-		regexp.MustCompile(`[\s,]`): {
-			code:     codeIdentifierEnd,
-			newState: scanPopState,
+		regexp.MustCompile(`[\s]`): {
+			code:      codeIdentifierEnd,
+			newStates: []int{scanPopState},
+		},
+		regexp.MustCompile(`{`): {
+			code:      codeBlockBegin,
+			newStates: []int{scanPopState},
+		},
+		regexp.MustCompile(`"`): {
+			code:      codeStringBegin,
+			newStates: []int{scanPopState, scanStateFindStringEnd},
 		},
 		regexp.MustCompile(`;`): {
-			code:     codeStatementEnd,
-			newState: scanPopState,
+			code:      codeSemicolon,
+			newStates: []int{scanPopState},
+		},
+		regexp.MustCompile(`,`): {
+			code:      codeComma,
+			newStates: []int{scanPopState},
 		},
 	},
 	scanStateFindStringEnd: map[*regexp.Regexp]transitionSpec{
 		regexp.MustCompile(`"`): {
-			code:     codeStringEnd,
-			newState: scanPopState,
+			code:      codeStringEnd,
+			newStates: []int{scanPopState},
 		},
 	},
 	scanStateFindCommentEnd: map[*regexp.Regexp]transitionSpec{
 		regexp.MustCompile(`\n`): {
-			code:     codeCommentEnd,
-			newState: scanPopState,
+			code:      codeCommentEnd,
+			newStates: []int{scanPopState},
 		},
 	},
 }
@@ -119,6 +129,6 @@ const (
 	codeIdentifierEnd
 	codeCommentBegin
 	codeCommentEnd
-	codeAssignment
-	codeStatementEnd
+	codeSemicolon
+	codeComma
 )
