@@ -1,16 +1,13 @@
-//line src/github.com/sayotte/iscdhcp/parse.y:2
 package iscdhcp
 
 import __yyfmt__ "fmt"
 
-//line src/github.com/sayotte/iscdhcp/parse.y:2
 import (
 	"fmt"
 	"net"
 	"strings"
 )
 
-//line src/github.com/sayotte/iscdhcp/parse.y:43
 type yySymType struct {
 	yys             int
 	num             int
@@ -111,9 +108,6 @@ const yyEofCode = 1
 const yyErrCode = 2
 const yyInitialStackSize = 16
 
-//line src/github.com/sayotte/iscdhcp/parse.y:318
-
-//line yacctab:1
 var yyExca = [...]int{
 	-1, 1,
 	1, -1,
@@ -218,8 +212,6 @@ var yyErrorMessages = [...]struct {
 	token int
 	msg   string
 }{}
-
-//line yaccpar:1
 
 /*	parser for yacc output	*/
 
@@ -552,32 +544,27 @@ yydefault:
 
 	case 1:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:59
 		{
 			l := yylex.(*lexer)
 			l.dirtyHackReturn = yyDollar[1].statementList
 		}
 	case 2:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:66
 		{
 			yyVAL.statementList = []Statement{yyDollar[1].statement}
 		}
 	case 3:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:70
 		{
 			yyVAL.statementList = append(yyVAL.statementList, yyDollar[2].statement)
 		}
 	case 15:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:93
 		{
 			yyVAL.statementList = yyDollar[2].statementList
 		}
 	case 16:
 		yyDollar = yyS[yypt-4 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:100
 		{
 			cs := ConditionalStatement{
 				Operator:        ConditionIf,
@@ -589,7 +576,6 @@ yydefault:
 		}
 	case 18:
 		yyDollar = yyS[yypt-4 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:113
 		{
 			cs := ConditionalStatement{
 				Operator:   ConditionElsif,
@@ -600,7 +586,6 @@ yydefault:
 		}
 	case 19:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:122
 		{
 			cs := ConditionalStatement{
 				Operator:   ConditionElse,
@@ -610,7 +595,6 @@ yydefault:
 		}
 	case 20:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:132
 		{
 			yyVAL.boolExpr = BooleanExpression{
 				Operator:  BoolAnd,
@@ -619,7 +603,6 @@ yydefault:
 		}
 	case 21:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:139
 		{
 			yyVAL.boolExpr = BooleanExpression{
 				Operator:  BoolOr,
@@ -628,7 +611,6 @@ yydefault:
 		}
 	case 22:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:146
 		{
 			yyVAL.boolExpr = BooleanExpression{
 				Operator:  BoolNot,
@@ -637,7 +619,6 @@ yydefault:
 		}
 	case 23:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:153
 		{
 			yyVAL.boolExpr = BooleanExpression{
 				Operator: BoolStatic,
@@ -645,7 +626,6 @@ yydefault:
 		}
 	case 24:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:159
 		{
 			yyVAL.boolExpr = BooleanExpression{
 				Operator: BoolKnown,
@@ -653,7 +633,6 @@ yydefault:
 		}
 	case 25:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:165
 		{
 			yyVAL.boolExpr = BooleanExpression{
 				Operator:  BoolExists,
@@ -662,7 +641,6 @@ yydefault:
 		}
 	case 26:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:172
 		{
 			yyVAL.boolExpr = BooleanExpression{
 				Operator:  BoolEqual,
@@ -671,7 +649,6 @@ yydefault:
 		}
 	case 27:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:179
 		{
 			yyVAL.boolExpr = BooleanExpression{
 				Operator:  BoolInequal,
@@ -680,7 +657,6 @@ yydefault:
 		}
 	case 28:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:186
 		{
 			yyVAL.boolExpr = BooleanExpression{
 				Operator:  BoolRegexMatch,
@@ -689,7 +665,6 @@ yydefault:
 		}
 	case 29:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:193
 		{
 			yyVAL.boolExpr = BooleanExpression{
 				Operator:  BoolRegexIMatch,
@@ -698,13 +673,11 @@ yydefault:
 		}
 	case 30:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:202
 		{
 			yyVAL.dataTerm = StringConstTerm(yyDollar[1].str)
 		}
 	case 31:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:206
 		{
 			yyVAL.dataTerm = PacketOptionTerm{
 				optionName: yyDollar[2].str,
@@ -712,19 +685,16 @@ yydefault:
 		}
 	case 32:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:224
 		{
 			yyVAL.ipList = append(yyVAL.ipList, net.ParseIP(yyDollar[3].str))
 		}
 	case 33:
 		yyDollar = yyS[yypt-1 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:228
 		{
 			yyVAL.ipList = []net.IP{net.ParseIP(yyDollar[1].str)}
 		}
 	case 34:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:234
 		{
 			gs := GroupStatement{
 				Statements: yyDollar[2].statementList,
@@ -733,7 +703,6 @@ yydefault:
 		}
 	case 35:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:242
 		{
 			hs := HostStatement{
 				Hostname:   yyDollar[2].str,
@@ -743,7 +712,6 @@ yydefault:
 		}
 	case 36:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:251
 		{
 			is := IncludeStatement{
 				Filename: yyDollar[2].str,
@@ -752,7 +720,6 @@ yydefault:
 		}
 	case 37:
 		yyDollar = yyS[yypt-5 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:259
 		{
 			sns := SubnetStatement{
 				SubnetNumber: net.ParseIP(yyDollar[2].str),
@@ -763,19 +730,16 @@ yydefault:
 		}
 	case 38:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:271
 		{
 			yyVAL.statement = AuthoritativeStatement(false)
 		}
 	case 39:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:275
 		{
 			yyVAL.statement = AuthoritativeStatement(true)
 		}
 	case 40:
 		yyDollar = yyS[yypt-4 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:281
 		{
 			yyVAL.statement = HardwareStatement{
 				HardwareType:    "ethernet",
@@ -784,13 +748,11 @@ yydefault:
 		}
 	case 41:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:290
 		{
 			yyVAL.statement = FixedAddressStatement(yyDollar[2].ipList)
 		}
 	case 42:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:296
 		{
 			val := false
 			cmpText := strings.ToLower(yyDollar[2].str)
@@ -801,13 +763,11 @@ yydefault:
 		}
 	case 43:
 		yyDollar = yyS[yypt-2 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:307
 		{
 			yyVAL.statement = yyDollar[2].statement
 		}
 	case 45:
 		yyDollar = yyS[yypt-3 : yypt+1]
-		//line src/github.com/sayotte/iscdhcp/parse.y:315
 		{
 			yyVAL.statement = DomainNameServersOption(yyDollar[2].ipList)
 		}
