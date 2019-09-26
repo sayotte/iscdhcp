@@ -1,9 +1,11 @@
 SHELL=/bin/bash
 ROOT = $(shell pwd)
-export GOPATH := ${ROOT}
-export PATH := ${PATH}:${ROOT}/bin
+ROOTBASENAME = $(shell basename ${ROOT})
+PARENTDIR := $(shell dirname `pwd`)
+export GOPATH := ${PARENTDIR}/${ROOTBASENAME}-gopath
+export PATH := ${PATH}:${GOPATH}/bin
 TEST_FLAGS ?= -cover
-YACC = bin/goyacc
+YACC = ${GOPATH}/bin/goyacc
 YACC_FLAGS = -l
 
 .PHONY: fmt build test lint
@@ -23,12 +25,14 @@ y.go: parse.y ${YACC}
 ${YACC}:
 	go get golang.org/x/tools/cmd/goyacc
 
-lint: bin/gometalinter
-	bin/gometalinter . -D gocyclo --exclude='y.go' --exclude='unused'
+lint: ${GOPATH}/bin/golangci-lint
+	${GOPATH}/bin/golangci-lint run ./...
 
-bin/gometalinter: 
-	go get github.com/alecthomas/gometalinter
-	bin/gometalinter --install
+${GOPATH}/bin/golangci-lint:
+	go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.19.1
 
 test:
 	go test ${TEST_FLAGS}
+
+shell:
+	bash

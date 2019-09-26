@@ -191,7 +191,7 @@ func (ddnsrdns ddnsRevDomainNameStatement) IndentedString(prefix string) string 
 }
 
 const (
-	ddnsUpdateStyleNone = iota
+	ddnsUpdateStyleNone = iota // nolint
 	ddnsUpdateStyleAdHoc
 	ddnsUpdateStyleInterim
 )

@@ -19,7 +19,6 @@ func (t token) String() string {
 var cidrRegexp = regexp.MustCompile(`^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2}$`)
 var ipAddrRegexp = regexp.MustCompile(`^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$`)
 var macAddrRegexp = regexp.MustCompile(`^[a-fA-F0-9]{1,2}:[a-fA-F0-9]{1,2}:[a-fA-F0-9]{1,2}:[a-fA-F0-9]{1,2}:[a-fA-F0-9]{1,2}:[a-fA-F0-9]{1,2}$`)
-var numRegexp = regexp.MustCompile(`\d+`)
 
 var stringTokenMap = map[string]int{
 	// declarations
