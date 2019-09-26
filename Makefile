@@ -25,12 +25,14 @@ y.go: parse.y ${YACC}
 ${YACC}:
 	go get golang.org/x/tools/cmd/goyacc
 
-lint: ${GOPATH}/bin/gometalinter
-	${GOPATH}/bin/gometalinter . -D gocyclo --exclude='y.go' --exclude='unused'
+lint: ${GOPATH}/bin/golangci-lint
+	${GOPATH}/bin/golangci-lint run ./...
 
-${GOPATH}/bin/gometalinter:
-	go get github.com/alecthomas/gometalinter
-	bin/gometalinter --install
+${GOPATH}/bin/golangci-lint:
+	go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.19.1
 
 test:
 	go test ${TEST_FLAGS}
+
+shell:
+	bash
