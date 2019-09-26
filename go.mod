@@ -1,6 +1,6 @@
 module github.com/sayotte/iscdhcp
 
-go 1.9
+go 1.13
 
 require (
 	github.com/golangci/golangci-lint v1.19.1 // indirect
